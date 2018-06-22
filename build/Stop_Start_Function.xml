@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<project name="Stop_Start_Funcation" xmlns:antcontrib="antlib:net.sf.antcontrib" basedir=".">
+
+<property file="eai_build_common.properties" />
+	
+	<macrodef name="porpertycopy"> 
+		<attribute name="name"/>
+		<attribute name="from"/>
+		<sequential>
+			<property name="@{name}" value="${@{from}}" />
+		</sequential>
+	</macrodef>
+	
+	<property file="${env}_brokersdetails.properties" />
+	<taskdef uri="antlib:net.sf.antcontrib" resource="net/sf/antcontrib/antlib.xml" >
+		<classpath>
+			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+	<!--************************************************* -->
+	<!-- The target for Stopping Broker. -->
+	<!--************************************************* -->
+	<target name="stop.broker" description="stopping Broker">
+	<porpertycopy name="env.username" from="${host}.username"/>
+	 <porpertycopy name="broker.runtime.location" from="${host}.runtime.location"/>
+						<!--<sshexec trust="true" host="${host}" username="${env.username}"
+							keyfile="${basedir}\${keyfile.name}"
+							command="cd ${broker.runtime.location};. ./mqsiprofile;./mqsistop ${broker.name}">
+						</sshexec>	-->
+            <ant  target="common.function">				
+				<property name="usrId" value="${env.username}"/>
+				<property name="keyfile" value="${basedir}\${keyfile.name}"/>
+				<property name="toHost" value="${host}"/>		
+				<property name="commands"  value="cd ${broker.runtime.location};. ./mqsiprofile;./mqsistop ${broker.name}" />				
+			</ant>						
+	</target>
+
+
+	<!--************************************************* -->
+	<!-- The target for Starting Broker. -->
+	<!--************************************************* -->
+	<target name="start.broker" description="starting Broker">
+	<porpertycopy name="env.username" from="${host}.username"/>
+	 <porpertycopy name="broker.runtime.location" from="${host}.runtime.location"/>
+						<!--<sshexec trust="true" host="${host}" username="${env.username}"
+							keyfile="${basedir}\${keyfile.name}"
+							command="cd ${broker.runtime.location};. ./mqsiprofile;./mqsistart ${broker.name}">
+						</sshexec>	-->
+ <ant  target="common.function">				
+				<property name="usrId" value="${env.username}"/>
+				<property name="keyfile" value="${basedir}\${keyfile.name}"/>
+				<property name="toHost" value="${host}"/>		
+				<property name="commands"  value="cd ${broker.runtime.location};. ./mqsiprofile;./mqsistart ${broker.name}" />				
+			</ant>						
+	</target>
+
+	<!--************************************************* -->
+	<!-- The target for Starting MessageFlow. -->
+	<!--************************************************* -->
+	<target name="start.messageflow" description="starting messageFlow">
+	<porpertycopy name="env.username" from="${host}.username"/>
+	 <porpertycopy name="broker.runtime.location" from="${host}.runtime.location"/>
+						<!--<sshexec trust="true" host="${host}" username="${env.username}"
+							keyfile="${basedir}\${keyfile.name}"
+							command="cd ${broker.runtime.location};. ./mqsiprofile;./mqsistartmsgflow -b ${broker.name} -e ${egname} -m ${flowname}">
+						</sshexec>	-->
+<ant  target="common.function">				
+				<property name="usrId" value="${env.username}"/>
+				<property name="keyfile" value="${basedir}\${keyfile.name}"/>
+				<property name="toHost" value="${host}"/>		
+				<property name="commands"  value="cd ${broker.runtime.location};. ./mqsiprofile;./mqsistartmsgflow  ${broker.name} -e ${egname} -m ${flowname}" />				
+			</ant>							
+	</target>
+	
+	<!--************************************************* -->
+	<!-- The target for Stopping MessageFlow. -->
+	<!--************************************************* -->
+	<target name="stop.messageflow" description="stopping MessageFlow">
+	<porpertycopy name="env.username" from="${host}.username"/>
+	 <porpertycopy name="broker.runtime.location" from="${host}.runtime.location"/>
+						<!--<sshexec trust="true" host="${host}" username="${env.username}"
+							keyfile="${basedir}\${keyfile.name}"
+							command="cd ${broker.runtime.location};. ./mqsiprofile;./mqsistopmsgflow -b ${broker.name} -e ${egname} -m ${flowname}">
+						</sshexec>-->
+		<ant  target="common.function">				
+				<property name="usrId" value="${env.username}"/>
+				<property name="keyfile" value="${basedir}\${keyfile.name}"/>
+				<property name="toHost" value="${host}"/>		
+				<property name="commands"  value="cd ${broker.runtime.location};. ./mqsiprofile;./mqsistopmsgflow  ${broker.name} -e ${egname} -m ${flowname}" />				
+			</ant>				
+	</target>
+</project>
